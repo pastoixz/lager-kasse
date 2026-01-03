@@ -1,0 +1,23 @@
+<h1>Kassensystem</h1>
+
+<div id="kasse-container">
+  <!-- Linke Seite: Produktliste -->
+  <div id="products-container">
+    <h2>Produkte</h2>
+    <div id="products">Lade Produkte...</div>
+  </div>
+
+  <!-- Rechte Seite: Warenkorb -->
+  <div id="cart-container">
+    <h2>Warenkorb</h2>
+    <ul id="cart"></ul>
+    <p id="total">Gesamt: 0 CHF</p>
+    <button id="checkout">Bestellung abschließen</button>
+  </div>
+</div>
+
+<!-- Unten: Bestellübersicht -->
+<div id="orders-container">
+  <h2>Bestellübersicht</h2>
+  <ul id="orders"></ul>
+</div>
