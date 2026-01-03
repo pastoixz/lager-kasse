@@ -4,7 +4,7 @@ const lager = document.getElementById("lager");
 
 async function ladeProdukte() {
   const { data, error } = await supabase
-    .from("Drinks")
+    .from("drinks")
     .select("name, preis, bestand")
     .order("name");
 
@@ -27,3 +27,4 @@ async function ladeProdukte() {
 }
 
 ladeProdukte();
+
