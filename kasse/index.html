@@ -23,28 +23,51 @@
  <div class="container">
     <div class="header">
       <h1>Kasse</h1>
-      <div class="sub">Tippe ein Produkt an • Bestand live</div>
+      <div class="sub">Tippe Produkte an → rechts Bestellliste → unten abschliessen</div>
     </div>
 
-    <div class="card">
-      <div class="card-pad">
-        <div id="produkte" class="grid"></div>
-      </div>
-
-      <div class="totalbar">
-        <div>
-          <div class="label">Total</div>
-          <div class="value">CHF <span id="total">0.00</span></div>
-          <div class="small">Letzter Verkauf kann rückgängig gemacht werden</div>
+    <div class="pos-layout">
+      <!-- Links oben: Produkte -->
+      <section class="card">
+        <div class="card-pad">
+          <h2 class="h2">Produkte</h2>
+          <div id="produkte" class="products-grid"></div>
         </div>
+      </section>
 
-        <div class="actions">
-          <button id="undo" class="btn danger">Undo</button>
+      <!-- Rechts oben: aktuelle Bestellung -->
+      <section class="card">
+        <div class="card-pad">
+          <h2 class="h2">Aktuelle Bestellung</h2>
+          <div id="cart" class="cart-list"></div>
+
+          <div class="totalbar">
+            <div>
+              <div class="label">Total</div>
+              <div class="value">CHF <span id="total">0.00</span></div>
+              <div class="small">Positionen rechts anklicken zum Löschen</div>
+            </div>
+            <div class="actions">
+              <button id="checkout" class="btn">Bestellung abschliessen</button>
+              <button id="clearCart" class="btn danger">Warenkorb leeren</button>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
+
+      <!-- Unten Mitte: Übersicht aller Bestellungen -->
+      <section class="card pos-history">
+        <div class="card-pad">
+          <div class="history-head">
+            <h2 class="h2">Bestellungen</h2>
+            <div class="small">Letzte Bestellungen mit Timestamp • Löschbar (mit Bestätigung)</div>
+          </div>
+          <div id="history" class="history-list"></div>
+        </div>
+      </section>
     </div>
   </div>
 
-  <script type="module" src="kasse.js"></script>
+  <script type="module" src="/kasse/kasse.js"></script>
 </body>
 </html>
