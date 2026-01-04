@@ -203,3 +203,82 @@ tr:last-child td{ border-bottom: 0; }
   font-size: 12px;
   color: var(--muted);
 }
+.h2{ margin: 0 0 10px 0; font-size: 16px; color: var(--text); }
+
+.pos-layout{
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+@media (min-width: 900px){
+  .pos-layout{
+    grid-template-columns: 1.2fr .8fr;
+    grid-template-areas:
+      "products cart"
+      "history  history";
+    align-items: start;
+  }
+  .pos-layout > section:nth-child(1){ grid-area: products; }
+  .pos-layout > section:nth-child(2){ grid-area: cart; }
+  .pos-history{ grid-area: history; }
+}
+
+.products-grid{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 10px;
+}
+@media (min-width: 520px){
+  .products-grid{ grid-template-columns: repeat(3, minmax(0,1fr)); }
+}
+
+.pbtn{
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 12px;
+  min-height: 90px;
+  cursor: pointer;
+  text-align: left;
+  color: #0b0f17;
+  font-weight: 700;
+}
+.pbtn:disabled{ opacity: .45; cursor: not-allowed; }
+
+.pname{ font-size: 15px; margin-bottom: 6px; }
+.pmeta{ display:flex; justify-content: space-between; font-size: 12px; font-weight: 600; opacity: .9; }
+
+.cart-list{ display:flex; flex-direction: column; gap: 8px; }
+.cart-item{
+  display:flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(255,255,255,.03);
+  cursor: pointer;
+}
+.cart-item:hover{ background: rgba(255,255,255,.05); }
+
+.cart-left{ display:flex; flex-direction: column; gap: 3px; }
+.cart-title{ font-weight: 700; }
+.cart-sub{ font-size: 12px; color: var(--muted); }
+
+.history-head{ display:flex; justify-content: space-between; gap: 12px; align-items: baseline; margin-bottom: 10px; }
+.history-list{ display:flex; flex-direction: column; gap: 8px; }
+
+.order-row{
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(255,255,255,.03);
+  padding: 10px 12px;
+  display:flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: start;
+}
+.order-items{ font-size: 13px; color: var(--text); }
+.order-meta{ font-size: 12px; color: var(--muted); margin-top: 4px; }
+.order-actions{ display:flex; gap: 8px; }
+
