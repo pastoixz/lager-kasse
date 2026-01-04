@@ -8,6 +8,18 @@
 </head>
 <body>
 
+<script>
+  const PIN = "9450"; // HIER DEINEN PIN SETZEN
+
+  const eingabe = prompt("PIN für die Kasse:");
+
+  if (eingabe !== PIN) {
+    document.body.innerHTML = "<h1>Zugriff verweigert</h1>";
+    throw new Error("Falscher PIN");
+  }
+</script>
+
+  
 <h1>Kasse</h1>
 
 <div id="produkte"></div>
