@@ -4,11 +4,6 @@
       "source": "/(.*)",
       "destination": "/api/kasse"
     }
-  ]
-}
-
-{
-  "routes": [
     {
       "src": "^/kasse/?$",
       "dest": "/kasse/index.html"
