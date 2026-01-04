@@ -20,14 +20,31 @@
 </script>
 
   
-<h1>Kasse</h1>
+ <div class="container">
+    <div class="header">
+      <h1>Kasse</h1>
+      <div class="sub">Tippe ein Produkt an • Bestand live</div>
+    </div>
 
-<div id="produkte"></div>
+    <div class="card">
+      <div class="card-pad">
+        <div id="produkte" class="grid"></div>
+      </div>
 
-<h2>Total: CHF <span id="total">0.00</span></h2>
+      <div class="totalbar">
+        <div>
+          <div class="label">Total</div>
+          <div class="value">CHF <span id="total">0.00</span></div>
+          <div class="small">Letzter Verkauf kann rückgängig gemacht werden</div>
+        </div>
 
-<button id="undo">Letzten Verkauf rückgängig</button>
+        <div class="actions">
+          <button id="undo" class="btn danger">Undo</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<script type="module" src="js/kasse.js"></script>
+  <script type="module" src="kasse.js"></script>
 </body>
 </html>
