@@ -1,261 +1,256 @@
 import { supabase } from "/js/supabase.js";
 
-const produkteDiv = document.getElementById("produkte");
-const cartDiv = document.getElementById("cart");
-const totalSpan = document.getElementById("total");
-const checkoutBtn = document.getElementById("checkout");
-const clearBtn = document.getElementById("clearCart");
-const historyDiv = document.getElementById("history");
+// Farben pro Produkt (einfach rotierend)
+const colors = ["#fbbf24","#60a5fa","#34d399","#f87171","#a78bfa","#fb7185","#22c55e","#38bdf8","#f59e0b","#c084fc"];
 
-let products = []; // aktuelle drinks aus DB
-let cart = new Map(); // id -> {id,name,price,qty,stock}
-let busy = false;
+let products = []; // kommt aus Supabase
+let cart = [];     // Array von Produktobjekten (wie in deinem Dummy)
+let orders = [];   // kommt aus Supabase
 
-const palette = [
-  "#fbbf24", "#60a5fa", "#34d399", "#f87171", "#a78bfa",
-  "#fb7185", "#22c55e", "#38bdf8", "#f59e0b", "#c084fc"
-];
+// -----------------------------
+// Produkte laden (Supabase)
+// -----------------------------
+async function loadProducts() {
+  const container = document.getElementById("products");
+  container.innerHTML = "Lade Produkte...";
 
-function chf(n){ return (Number(n)||0).toFixed(2); }
-
-function cartTotal(){
-  let t = 0;
-  for (const it of cart.values()) t += (it.price * it.qty);
-  return t;
-}
-
-function renderProducts(){
-  produkteDiv.innerHTML = "";
-
-  products.forEach((p, idx) => {
-    const price = Number(p.price) || 0;
-    const stock = Number(p.stock) || 0;
-
-    const btn = document.createElement("button");
-    btn.className = "pbtn";
-    btn.style.background = palette[idx % palette.length];
-    btn.disabled = busy || stock <= 0;
-
-    btn.innerHTML = `
-      <div class="pname">${p.name}</div>
-      <div class="pmeta">
-        <span>CHF ${chf(price)}</span>
-        <span>${stock > 0 ? `${stock} verfügbar` : "ausverkauft"}</span>
-      </div>
-    `;
-
-    btn.onclick = () => addToCart(p.id);
-
-    produkteDiv.appendChild(btn);
-  });
-}
-
-function renderCart(){
-  const items = Array.from(cart.values());
-
-  if (items.length === 0){
-    cartDiv.innerHTML = `<div class="small">Noch keine Produkte ausgewählt.</div>`;
-    totalSpan.textContent = "0.00";
-    return;
-  }
-
-  cartDiv.innerHTML = "";
-  items.forEach(it => {
-    const row = document.createElement("div");
-    row.className = "cart-item";
-    row.title = "Tippen um diese Position zu entfernen";
-
-    row.innerHTML = `
-      <div class="cart-left">
-        <div class="cart-title">${it.name} × ${it.qty}</div>
-        <div class="cart-sub">CHF ${chf(it.price)} • Subtotal CHF ${chf(it.price * it.qty)}</div>
-      </div>
-      <div class="cart-sub">${it.stock} an Lager</div>
-    `;
-
-    row.onclick = () => removeLine(it.id); // komplettes Produkt entfernen
-
-    cartDiv.appendChild(row);
-  });
-
-  totalSpan.textContent = chf(cartTotal());
-}
-
-function renderHistory(orders){
-  historyDiv.innerHTML = "";
-  if (!orders || orders.length === 0){
-    historyDiv.innerHTML = `<div class="small">Noch keine Bestellungen.</div>`;
-    return;
-  }
-
-  orders.forEach(o => {
-    const items = (o.items || []).map(it => `${it.name}×${it.qty}`).join(", ");
-    const time = new Date(o.created_at).toLocaleString();
-
-    const row = document.createElement("div");
-    row.className = "order-row";
-
-    row.innerHTML = `
-      <div>
-        <div class="order-items"><strong>#${o.id}</strong> • ${items}</div>
-        <div class="order-meta">CHF ${chf(o.total)} • ${time}</div>
-      </div>
-      <div class="order-actions">
-        <button class="btn danger" data-id="${o.id}">Löschen</button>
-      </div>
-    `;
-
-    row.querySelector("button").onclick = () => deleteOrder(o.id);
-
-    historyDiv.appendChild(row);
-  });
-}
-
-function addToCart(id){
-  const p = products.find(x => x.id === id);
-  if (!p) return;
-
-  const price = Number(p.price) || 0;
-  const stock = Number(p.stock) || 0;
-
-  const existing = cart.get(id);
-  const newQty = (existing?.qty || 0) + 1;
-
-  if (newQty > stock){
-    alert("Nicht genug Bestand");
-    return;
-  }
-
-  cart.set(id, {
-    id,
-    name: p.name,
-    price,
-    qty: newQty,
-    stock
-  });
-
-  renderCart();
-}
-
-function removeLine(id){
-  cart.delete(id);
-  renderCart();
-}
-
-function clearCart(){
-  cart.clear();
-  renderCart();
-}
-
-async function loadProducts(){
   const { data, error } = await supabase
     .from("drinks")
-    .select("id, name, price, stock")
+    .select("id, name, price, stock, public")
+    .eq("public", true)
     .order("name");
 
-  if (error){
+  if (error) {
     console.error(error);
-    produkteDiv.innerHTML = "<p>Fehler beim Laden</p>";
+    container.innerHTML = "Fehler beim Laden der Produkte";
     return;
   }
 
   products = data || [];
-  // Stock/Preis im Warenkorb updaten, falls sich was geändert hat
-  for (const it of cart.values()){
-    const p = products.find(x => x.id === it.id);
-    if (p){
-      it.stock = Number(p.stock) || 0;
-      it.price = Number(p.price) || 0;
-      if (it.qty > it.stock) it.qty = it.stock; // clamp
-      if (it.qty <= 0) cart.delete(it.id);
-    }
-  }
-
   renderProducts();
-  renderCart();
 }
 
-async function loadHistory(){
+// -----------------------------
+// Produkte anzeigen (Buttons)
+// -----------------------------
+function renderProducts() {
+  const container = document.getElementById("products");
+  container.innerHTML = "";
+
+  if (products.length === 0) {
+    container.innerHTML = "<div class='small'>Keine Produkte vorhanden.</div>";
+    return;
+  }
+
+  products.forEach((item, idx) => {
+    const btn = document.createElement("button");
+    btn.className = "product-btn";
+    btn.style.backgroundColor = colors[idx % colors.length];
+
+    const stock = Number(item.stock) || 0;
+    const price = Number(item.price) || 0;
+
+    btn.disabled = stock <= 0;
+
+    btn.innerHTML = `
+      <div>${item.name}</div>
+      <div class="product-meta">
+        CHF ${price.toFixed(2)} • ${stock > 0 ? `${stock} verfügbar` : "ausverkauft"}
+      </div>
+    `;
+
+    btn.onclick = () => addToCart(item.id);
+    container.appendChild(btn);
+  });
+}
+
+// -----------------------------
+// In Warenkorb legen
+// -----------------------------
+function addToCart(productId) {
+  const prod = products.find(p => p.id === productId);
+  if (!prod) return;
+
+  // Optional: Stock-Limit schon im UI verhindern (1 Klick = 1 Stück)
+  const alreadyInCart = cart.filter(i => i.id === productId).length;
+  if (alreadyInCart + 1 > (Number(prod.stock) || 0)) {
+    alert("Nicht genug Bestand");
+    return;
+  }
+
+  cart.push({ ...prod });
+  updateCart();
+}
+
+// -----------------------------
+// Warenkorb aktualisieren
+// -----------------------------
+function updateCart() {
+  const ul = document.getElementById("cart");
+  ul.innerHTML = "";
+
+  let total = 0;
+
+  cart.forEach((item, idx) => {
+    const li = document.createElement("li");
+
+    const price = Number(item.price) || 0;
+    li.textContent = `${item.name} - ${price.toFixed(2)} CHF`;
+
+    const removeBtn = document.createElement("button");
+    removeBtn.textContent = "✖";
+    removeBtn.className = "remove-btn";
+    removeBtn.onclick = () => {
+      cart.splice(idx, 1);
+      updateCart();
+    };
+
+    li.appendChild(removeBtn);
+    ul.appendChild(li);
+
+    total += price;
+  });
+
+  document.getElementById("total").textContent = `Gesamt: ${total.toFixed(2)} CHF`;
+}
+
+// -----------------------------
+// Bestellung abschliessen (Supabase RPC)
+// -----------------------------
+async function checkout() {
+  if (cart.length === 0) {
+    alert("Warenkorb ist leer!");
+    return;
+  }
+
+  // items für RPC (pro Produkt Menge zählen)
+  const grouped = new Map(); // id -> qty
+  cart.forEach(it => grouped.set(it.id, (grouped.get(it.id) || 0) + 1));
+
+  const items = Array.from(grouped.entries()).map(([id, qty]) => {
+    const p = products.find(x => x.id === id);
+    return {
+      id,
+      qty,
+      name: p?.name ?? "",
+      price: Number(p?.price) || 0
+    };
+  });
+
+  const ok = confirm("Bestellung wirklich abschliessen?");
+  if (!ok) return;
+
+  // Atomar: stock reduzieren + order speichern
+  const { data, error } = await supabase.rpc("checkout_order", { items });
+
+  if (error) {
+    console.error(error);
+    alert("Checkout fehlgeschlagen: " + (error.message || "Unbekannt"));
+    return;
+  }
+
+  cart = [];
+  updateCart();
+
+  await loadProducts();
+  await loadOrders();
+}
+
+// -----------------------------
+// Bestellungen laden (Supabase)
+// -----------------------------
+async function loadOrders() {
+  const ul = document.getElementById("orders");
+  ul.innerHTML = "Lade Bestellungen...";
+
   const { data, error } = await supabase
     .from("orders")
     .select("id, created_at, total, items")
     .order("created_at", { ascending: false })
     .limit(50);
 
-  if (error){
+  if (error) {
     console.error(error);
-    historyDiv.innerHTML = "<p>Fehler beim Laden</p>";
+    ul.innerHTML = "Fehler beim Laden der Bestellungen";
     return;
   }
 
-  renderHistory(data);
+  orders = data || [];
+  updateOrders();
 }
 
-async function checkout(){
-  if (busy) return;
-  const items = Array.from(cart.values()).map(it => ({
-    id: it.id,
-    name: it.name,
-    price: it.price,
-    qty: it.qty
-  }));
+// -----------------------------
+// Bestellübersicht rendern (+ löschen mit confirm)
+// -----------------------------
+function updateOrders() {
+  const ul = document.getElementById("orders");
+  ul.innerHTML = "";
 
-  if (items.length === 0) return;
+  let totalSum = 0;
 
-  if (!confirm("Bestellung abschliessen?")) return;
+  orders.forEach((order) => {
+    const li = document.createElement("li");
 
-  busy = true;
-  checkoutBtn.disabled = true;
+    const itemsText = (order.items || [])
+      .map(it => `${it.name}×${it.qty}`)
+      .join(", ");
 
-  const { data, error } = await supabase.rpc("checkout_order", { items });
+    const orderSum = Number(order.total) || 0;
+    totalSum += orderSum;
 
-  if (error){
-    console.error(error);
-    alert("Checkout fehlgeschlagen: " + (error.message || "Unbekannt"));
-  } else {
-    clearCart();
-    await loadProducts();
-    await loadHistory();
-  }
+    const time = new Date(order.created_at).toLocaleString();
 
-  busy = false;
-  checkoutBtn.disabled = false;
+    const left = document.createElement("div");
+    left.innerHTML = `
+      <div>${itemsText} - ${orderSum.toFixed(2)} CHF</div>
+      <div class="small">${time} • #${order.id}</div>
+    `;
+
+    const delBtn = document.createElement("button");
+    delBtn.textContent = "✖";
+    delBtn.className = "remove-btn";
+    delBtn.onclick = async () => {
+      const confirmDelete = confirm("Willst du diese Bestellung wirklich löschen?\nBestand wird zurückgebucht.");
+      if (!confirmDelete) return;
+
+      const { error } = await supabase.rpc("delete_order_and_restore", { order_id: order.id });
+      if (error) {
+        console.error(error);
+        alert("Löschen fehlgeschlagen: " + (error.message || "Unbekannt"));
+        return;
+      }
+
+      await loadProducts();
+      await loadOrders();
+    };
+
+    li.textContent = ""; // damit wir left + button sauber reinsetzen
+    li.appendChild(left);
+    li.appendChild(delBtn);
+    ul.appendChild(li);
+  });
+
+  // Gesamtsumme unten
+  const totalLi = document.createElement("li");
+  totalLi.style.fontWeight = "bold";
+  totalLi.textContent = `Gesamtsumme aller Bestellungen: ${totalSum.toFixed(2)} CHF`;
+  ul.appendChild(totalLi);
 }
 
-async function deleteOrder(orderId){
-  if (busy) return;
+// -----------------------------
+// Event Listener
+// -----------------------------
+document.getElementById("checkout").addEventListener("click", checkout);
 
-  const ok = confirm(`Bestellung #${orderId} wirklich löschen?\nBestand wird wieder zurückgebucht.`);
-  if (!ok) return;
-
-  busy = true;
-
-  const { error } = await supabase.rpc("delete_order_and_restore", { order_id: orderId });
-
-  if (error){
-    console.error(error);
-    alert("Löschen fehlgeschlagen: " + (error.message || "Unbekannt"));
-  } else {
-    await loadProducts();
-    await loadHistory();
-  }
-
-  busy = false;
-}
-
-checkoutBtn.onclick = checkout;
-clearBtn.onclick = () => {
-  if (cart.size === 0) return;
-  if (confirm("Warenkorb wirklich leeren?")) clearCart();
-};
-
-// Initial
+// -----------------------------
+// Start
+// -----------------------------
 await loadProducts();
-await loadHistory();
+await loadOrders();
 
-// Live: ohne flackern -> wir laden hier einfach neu (kann man später patchen)
+// Live updates (optional)
 supabase
-  .channel("drinks-live-kasse-ui")
+  .channel("pos-live")
   .on("postgres_changes", { event: "*", schema: "public", table: "drinks" }, () => loadProducts())
-  .on("postgres_changes", { event: "*", schema: "public", table: "orders" }, () => loadHistory())
+  .on("postgres_changes", { event: "*", schema: "public", table: "orders" }, () => loadOrders())
   .subscribe();
