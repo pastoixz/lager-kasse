@@ -6,3 +6,16 @@
     }
   ]
 }
+
+{
+  "routes": [
+    {
+      "src": "^/kasse/?$",
+      "dest": "/kasse/index.html"
+    },
+    {
+      "src": "^/kasse/(.*)",
+      "dest": "/kasse/$1"
+    }
+  ]
+}
