@@ -1,22 +1,205 @@
-body {
-  font-family: sans-serif;
-  padding: 1rem;
+/* Basic reset */
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+
+:root{
+  --bg: #0b0f17;
+  --card: #111827;
+  --muted: #9ca3af;
+  --text: #e5e7eb;
+  --line: rgba(255,255,255,.08);
+  --accent: #22c55e;
+  --danger: #ef4444;
+  --shadow: 0 10px 30px rgba(0,0,0,.35);
+  --radius: 16px;
 }
 
-table {
+body{
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  background: radial-gradient(1200px 700px at 20% 0%, rgba(34,197,94,.18), transparent 50%),
+              radial-gradient(900px 600px at 90% 10%, rgba(59,130,246,.18), transparent 55%),
+              var(--bg);
+  color: var(--text);
+  padding: 18px;
+}
+
+.container{
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.header{
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+h1{
+  margin: 0;
+  font-size: 28px;
+  letter-spacing: .2px;
+}
+
+.sub{
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* Cards */
+.card{
+  background: rgba(17,24,39,.9);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.card-pad{
+  padding: 14px;
+}
+
+/* Lager table */
+.table-wrap{ overflow-x: auto; }
+
+table{
   width: 100%;
   border-collapse: collapse;
 }
 
-td, th {
-  border: 1px solid #ccc;
-  padding: 0.5rem;
+th, td{
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  white-space: nowrap;
 }
 
-button {
-  display: block;
+th{
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 600;
+  background: rgba(255,255,255,.02);
+}
+
+tr:last-child td{ border-bottom: 0; }
+
+.badge{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  font-size: 13px;
+}
+
+.badge.ok{ color: #86efac; }
+.badge.out{ color: #fca5a5; }
+
+.dot{
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--accent);
+}
+.badge.out .dot{ background: var(--danger); }
+
+/* Kasse */
+.grid{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+@media (min-width: 720px){
+  .grid{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+.kbtn{
   width: 100%;
-  font-size: 1.2rem;
-  margin: 0.5rem 0;
-  padding: 1rem;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,.03);
+  color: var(--text);
+  border-radius: 18px;
+  padding: 14px 14px;
+  text-align: left;
+  cursor: pointer;
+  transition: transform .05s ease, background .15s ease, border-color .15s ease;
+  min-height: 86px;
+}
+
+.kbtn:active{ transform: scale(.99); }
+.kbtn:hover{ background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.14); }
+.kbtn:disabled{
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+.kname{
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.kmeta{
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.totalbar{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 14px;
+  padding: 14px;
+  border-top: 1px solid var(--line);
+  background: rgba(255,255,255,.02);
+}
+
+.totalbar .label{
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.totalbar .value{
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: .2px;
+}
+
+.actions{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn{
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,.04);
+  color: var(--text);
+  border-radius: 14px;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: background .15s ease, border-color .15s ease;
+}
+
+.btn:hover{ background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.16); }
+
+.btn.danger{
+  border-color: rgba(239,68,68,.35);
+  background: rgba(239,68,68,.08);
+}
+
+.btn.danger:hover{
+  background: rgba(239,68,68,.14);
+}
+
+.small{
+  font-size: 12px;
+  color: var(--muted);
 }
