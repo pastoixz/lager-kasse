@@ -1,28 +1,44 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Stock</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
 <body>
-  <div class="container">
-    <div class="header">
-      <h1>Aktueller Lagerbestand</h1>
-      <div class="sub">Live • wird automatisch aktualisiert</div>
-      <link rel="stylesheet" href="/css/style.css">
-    </div>
+  <div class="page">
+    <div class="shell">
 
-    <div class="card">
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Produkt</th>
-              <th>Preis</th>
-              <th>Bestand</th>
-            </tr>
-          </thead>
-          <tbody id="lager">
-            <tr><td colspan="3">Lade Daten…</td></tr>
-          </tbody>
-        </table>
+      <nav class="nav">
+        <a class="active" href="/">Stock</a>
+        <a href="/impressions.html">Impressions</a>
+        <a href="/buy.html">Buy!</a>
+      </nav>
+
+      <div class="card">
+        <h1>Stock</h1>
+        <p class="sub">Live • aktualisiert automatisch</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Produkt</th>
+                <th>Preis</th>
+                <th>Bestand</th>
+              </tr>
+            </thead>
+            <tbody id="lager">
+              <tr><td colspan="3">Lade Daten…</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
+
     </div>
   </div>
 
-  <script type="module" src="js/lager.js"></script>
+  <script type="module" src="/js/lager.js"></script>
 </body>
+</html>
