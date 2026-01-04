@@ -1,4 +1,5 @@
-import { supabase } from "/js/supabase.js";
+import { supabase } from "./supabase.js";
+
 
 // Farben pro Produkt (einfach rotierend)
 const colors = ["#fbbf24","#60a5fa","#34d399","#f87171","#a78bfa","#fb7185","#22c55e","#38bdf8","#f59e0b","#c084fc"];
