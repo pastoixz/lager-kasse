@@ -18,7 +18,7 @@ h1, h2 {
   margin-bottom: 30px;
 }
 
-#products-container, #cart-container, #orders-container {
+#products-container, #cart-container {
   background-color: #fff;
   padding: 20px;
   border-radius: 12px;
@@ -99,3 +99,11 @@ button:hover { background-color: #45a049; }
   font-size: 12px;
   color: #666;
 }
+
+/* Bestellübersicht: volle Breite, zentriert */
+#orders-container {
+  width: 100%;
+  max-width: 1100px;   /* kannst du auch 1400px machen */
+  margin: 0 auto;      /* zentriert */
+}
+
