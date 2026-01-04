@@ -107,3 +107,16 @@ button:hover { background-color: #45a049; }
   margin: 0 auto;      /* zentriert */
 }
 
+/* Warenkorb: Button unten rechts fixieren */
+.cart-container {
+  position: relative;
+  padding-bottom: 80px; /* Platz für den Button */
+}
+
+.checkout-btn {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  background-color: #4caf50;
+}
+
