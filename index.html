@@ -1,43 +1,37 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Stock</title>
-  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-  <div class="page">
-    <div class="shell">
 
-      <nav class="nav">
-        <a class="active" href="/">Stock</a>
-        <a href="/impressions.html">Impressions</a>
-        <a href="/buy.html">Buy!</a>
-      </nav>
+  <!-- Navigation -->
+  <nav class="nav">
+    <a class="active" href="/">Stock</a>
+    <a href="/impressions.html">Impressions</a>
+    <a href="/buy.html">Buy!</a>
+  </nav>
 
-      <div class="card">
-        <h1>Stock</h1>
-        <p class="sub">Live • aktualisiert automatisch</p>
-
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Produkt</th>
-                <th>Preis</th>
-                <th>Bestand</th>
-              </tr>
-            </thead>
-            <tbody id="lager">
-              <tr><td colspan="3">Lade Daten…</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
+  <!-- Content -->
+  <main class="page">
+    <div class="content">
+      <table>
+        <thead>
+          <tr>
+            <th>Produkt</th>
+            <th>Preis</th>
+            <th>Bestand</th>
+          </tr>
+        </thead>
+        <tbody id="lager">
+          <tr><td colspan="3">Lade Daten…</td></tr>
+        </tbody>
+      </table>
     </div>
-  </div>
+  </main>
 
   <script type="module" src="/js/lager.js"></script>
 </body>
