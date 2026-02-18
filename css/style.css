@@ -114,18 +114,62 @@ a:hover {
 
 
 /* =========================
-   IMPRESSIONS GRID
+   IMPRESSIONS REDESIGN
    ========================= */
 
-.impressions{
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 24px;
+.impressions-container {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 100%;
+  max-width: 1000px;
 }
 
-.impressions img{
+/* Text Styling */
+.story-text p {
+  line-height: 1.8;
+  font-size: 16px;
+  margin: 0;
+}
+
+/* Das Grid für die Bilder (Mobile First: 2 Spalten) */
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px; 
+}
+
+/* Bilder Styling: Quadratisch geschnitten, damit das Grid clean bleibt */
+.photo-grid img {
   width: 100%;
-  height: auto;
-  display: block;
+  aspect-ratio: 1 / 1; /* Macht alle Bilder schön quadratisch */
+  object-fit: cover; /* Verhindert, dass die Bilder verzerrt werden */
   border: 1px solid #000;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+/* Brutalist Hover-Effekt: Bild springt hoch und wirft harten Schatten */
+.photo-grid img:hover {
+  transform: translate(-4px, -4px);
+  box-shadow: 6px 6px 0px #000;
+}
+
+/* Desktop Ansicht: Text links, Bilder rechts */
+@media (min-width: 768px) {
+  .impressions-container {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .story-text {
+    flex: 1; /* Nimmt 1 Teil des Platzes ein */
+    position: sticky;
+    top: 40px; /* Bleibt beim Scrollen oben kleben */
+  }
+
+  .photo-grid {
+    flex: 1.2; /* Nimmt etwas mehr Platz ein als der Text */
+    gap: 20px;
+  }
 }
