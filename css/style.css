@@ -175,23 +175,23 @@ a:hover {
 }
 
 /* =========================
-   WEIN-ABO BUTTON (Breiter & Invertiert)
+   WEIN-ABO BUTTON (Extra breit & Originalfarben)
    ========================= */
 
 .wein-abo-btn {
   display: inline-block;
-  padding: 14px 48px; /* Hier breiter gemacht (vorher 24px) */
+  padding: 14px 80px; /* Hier noch deutlich breiter gemacht (80px statt 48px) */
   margin-bottom: 40px; 
   text-decoration: none;
-  color: #fff; /* Text jetzt standardmäßig Weiß */
+  color: #000; /* Text wieder Schwarz */
   font-weight: 600;
   border: 2px solid #000;
-  background: #000; /* Hintergrund jetzt standardmäßig Schwarz */
+  background: #fff; /* Hintergrund wieder Weiß */
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .wein-abo-btn:hover {
-  background-color: #fff; /* Beim Drüberfahren wird der Hintergrund Weiß */
-  color: #000; /* Beim Drüberfahren wird der Text Schwarz */
+  background-color: #000; /* Beim Drüberfahren wird der Hintergrund Schwarz */
+  color: #fff; /* Beim Drüberfahren wird der Text Weiß */
 }
 
