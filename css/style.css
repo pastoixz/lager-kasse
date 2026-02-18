@@ -174,3 +174,23 @@ a:hover {
   }
 }
 
+/* =========================
+   WEIN-ABO BUTTON
+   ========================= */
+
+.wein-abo-btn {
+  display: inline-block;
+  padding: 14px 24px;
+  margin-bottom: 40px; /* Macht schön Platz zum Text darunter */
+  text-decoration: none;
+  color: #000;
+  font-weight: 600;
+  border: 2px solid #000;
+  background: #fff;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.wein-abo-btn:hover {
+  background-color: #000;
+  color: #fff;
+}
