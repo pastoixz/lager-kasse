@@ -1,5 +1,7 @@
 import { supabase } from "./supabase.js";
 
+console.log("Shop.js geladen!"); // Test-Log
+
 const productList = document.getElementById("product-list");
 const cartItemsContainer = document.getElementById("cart-items");
 const cartTotalEl = document.getElementById("cart-total");
@@ -12,31 +14,37 @@ function formatCHF(value) {
   return (Number(value) || 0).toFixed(2);
 }
 
-// WICHTIG: Damit die HTML-Buttons die Funktion finden!
+// DIE FUNKTION GLOBAL MACHEN
 window.updateCart = function(id, change) {
+  console.log("updateCart aufgerufen für ID:", id, "Change:", change);
+  
   const prod = products.find(p => p.id === id);
-  if (!prod) return;
+  if (!prod) {
+    console.error("Produkt nicht gefunden!");
+    return;
+  }
   
   const current = cart[id] || 0;
   let next = current + change;
-  
   const stock = Number(prod.stock) || 0;
   
   if (next < 0) next = 0;
   if (next > stock) {
-    alert("Nicht genug Bestand!");
+    alert("Nö, so viel hab ich leider nimmer auf Lager!");
     next = stock;
   }
   
   if (next === 0) delete cart[id];
   else cart[id] = next;
   
+  console.log("Neuer Warenkorb-Status:", cart);
   renderProducts();
   renderCart();
 };
 
 async function loadProducts() {
-  if (!productList) return;
+  console.log("Lade Produkte von Supabase...");
+  
   const { data, error } = await supabase
     .from("drinks")
     .select("id, name, price, stock, public")
@@ -44,31 +52,38 @@ async function loadProducts() {
     .order("name");
 
   if (error) {
-    productList.innerHTML = "<p>Fehler beim Laden.</p>";
+    console.error("Fehler beim Laden der Produkte:", error);
+    productList.innerHTML = "<p>Fehler beim Laden. Schau in die Console!</p>";
     return;
   }
+  
   products = data || [];
+  console.log("Produkte erfolgreich geladen:", products);
   renderProducts();
 }
 
 function renderProducts() {
+  if (!productList) return;
   if (products.length === 0) {
-    productList.innerHTML = "<p>Aktuell leider alles ausgetrunken!</p>";
+    productList.innerHTML = "<p>Keine Weine gefunden.</p>";
     return;
   }
+  
   productList.innerHTML = products.map(p => {
     const qty = cart[p.id] || 0;
     const stock = Number(p.stock) || 0;
+    const outOfStock = stock <= 0;
+    
     return `
-      <div class="product-item" style="${stock <= 0 ? 'opacity: 0.5' : ''}">
+      <div class="product-item" style="${outOfStock ? 'opacity: 0.5' : ''}">
         <div>
           <div style="font-weight: bold;">${p.name}</div>
-          <div class="small">CHF ${formatCHF(p.price)} • ${stock > 0 ? `${stock} verfügbar` : 'ausverkauft'}</div>
+          <div class="small">CHF ${formatCHF(p.price)} • ${outOfStock ? 'ausverkauft' : `${stock} verfügbar`}</div>
         </div>
         <div class="product-actions">
-          <button type="button" onclick="updateCart('${p.id}', -1)" ${qty === 0 ? 'disabled' : ''}>-</button>
-          <span style="width: 30px; text-align: center;">${qty}</span>
-          <button type="button" onclick="updateCart('${p.id}', 1)" ${qty >= stock ? 'disabled' : ''}>+</button>
+          <button type="button" onclick="window.updateCart('${p.id}', -1)" ${qty === 0 ? 'disabled' : ''}>-</button>
+          <span style="width: 30px; text-align: center; display: inline-block;">${qty}</span>
+          <button type="button" onclick="window.updateCart('${p.id}', 1)" ${qty >= stock || outOfStock ? 'disabled' : ''}>+</button>
         </div>
       </div>
     `;
@@ -107,9 +122,15 @@ if (checkoutForm) {
       return { id, qty, name: p.name, price: Number(p.price) };
     });
 
+    console.log("Sende Checkout an Supabase RPC...");
     const { error } = await supabase.rpc("checkout_order", { items });
-    if (error) return alert("Fehler: " + error.message);
+    
+    if (error) {
+      console.error("RPC Fehler:", error);
+      return alert("Fehler beim Reservieren: " + error.message);
+    }
 
+    console.log("Supabase Erfolg! Sende E-Mail...");
     checkoutForm.submit();
   });
 }
