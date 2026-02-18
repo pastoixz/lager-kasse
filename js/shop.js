@@ -12,12 +12,35 @@ function formatCHF(value) {
   return (Number(value) || 0).toFixed(2);
 }
 
+// WICHTIG: Damit die HTML-Buttons die Funktion finden!
+window.updateCart = function(id, change) {
+  const prod = products.find(p => p.id === id);
+  if (!prod) return;
+  
+  const current = cart[id] || 0;
+  let next = current + change;
+  
+  const stock = Number(prod.stock) || 0;
+  
+  if (next < 0) next = 0;
+  if (next > stock) {
+    alert("Nicht genug Bestand!");
+    next = stock;
+  }
+  
+  if (next === 0) delete cart[id];
+  else cart[id] = next;
+  
+  renderProducts();
+  renderCart();
+};
+
 async function loadProducts() {
   if (!productList) return;
   const { data, error } = await supabase
     .from("drinks")
     .select("id, name, price, stock, public")
-    .eq("public", true) // Nur öffentliche Weine zeigen
+    .eq("public", true)
     .order("name");
 
   if (error) {
@@ -52,21 +75,6 @@ function renderProducts() {
   }).join("");
 }
 
-window.updateCart = (id, change) => {
-  const prod = products.find(p => p.id === id);
-  if (!prod) return;
-  const current = cart[id] || 0;
-  let next = current + change;
-  if (next < 0) next = 0;
-  if (next > (Number(prod.stock) || 0)) next = Number(prod.stock);
-  
-  if (next === 0) delete cart[id];
-  else cart[id] = next;
-  
-  renderProducts();
-  renderCart();
-};
-
 function renderCart() {
   let total = 0;
   let itemsHTML = "";
@@ -99,11 +107,9 @@ if (checkoutForm) {
       return { id, qty, name: p.name, price: Number(p.price) };
     });
 
-    // 1. Bestand in Supabase reservieren (RPC wie in deiner Kasse)
     const { error } = await supabase.rpc("checkout_order", { items });
     if (error) return alert("Fehler: " + error.message);
 
-    // 2. Formular absenden (Formspree Mail)
     checkoutForm.submit();
   });
 }
