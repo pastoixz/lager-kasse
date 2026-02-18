@@ -195,3 +195,67 @@ a:hover {
   color: #fff; /* Beim Drüberfahren wird der Text Weiß */
 }
 
+/* =========================
+   ABO FORMULAR
+   ========================= */
+
+.abo-form {
+  max-width: 500px;
+  margin: 40px auto 0; /* Zentriert das Formular unter dem Text */
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Vorname & Nachname nebeneinander */
+.form-row {
+  display: flex;
+  gap: 16px;
+}
+
+.form-row input {
+  flex: 1; /* Beide Felder nehmen genau die Hälfte des Platzes ein */
+}
+
+/* Styling der Eingabefelder */
+.abo-form input {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #000;
+  font-family: inherit; /* Übernimmt deine Departure Mono Schriftart */
+  font-size: 14px;
+  background: #fff;
+  color: #000;
+}
+
+/* Wenn man in ein Feld klickt */
+.abo-form input:focus {
+  outline: 2px solid #000;
+  outline-offset: 2px;
+}
+
+/* Der Absenden-Button */
+.submit-btn {
+  padding: 16px;
+  background: #000;
+  color: #fff;
+  border: 2px solid #000;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  margin-top: 8px;
+}
+
+.submit-btn:hover {
+  background: #fff;
+  color: #000;
+}
+
+/* Mobile Ansicht: Felder untereinander statt nebeneinander */
+@media (max-width: 480px) {
+  .form-row {
+    flex-direction: column;
+  }
+}
