@@ -19,6 +19,10 @@
       
       <h2 style="border-bottom: 2px solid #000; padding-bottom: 10px; text-align: center;">Shop</h2>
       
+      <p style="text-align: center; margin-bottom: 40px;">
+        Hey, wähl der die Weine aus wo d gern hettsch, i chum den gerne uf di zue ^^
+      </p>
+      
       <div class="shop-container">
         
         <div id="product-list" class="product-list">
@@ -30,14 +34,28 @@
           <ul id="cart-items" style="list-style: none; padding: 0; margin: 0 0 20px 0;">
             <li class="small">Noch leer.</li>
           </ul>
+          
           <div style="border-top: 2px solid #000; padding-top: 10px; font-weight: bold; font-size: 18px;">
             Total: CHF <span id="cart-total">0.00</span>
           </div>
 
-          <form id="checkout-form" style="margin-top: 20px; display: flex; flex-direction: column; gap: 10px;">
-            <input type="text" id="kunden-name" placeholder="Dein Name" required style="padding: 10px; border: 1px solid #000; font-family: inherit;">
-            <input type="email" id="kunden-email" placeholder="Deine E-Mail" required style="padding: 10px; border: 1px solid #000; font-family: inherit;">
-            <button type="submit" class="submit-btn" style="margin-top: 10px;">Kostenpflichtig bestellen</button>
+          <form id="checkout-form" action="https://formspree.io/f/xqedldev" method="POST" style="margin-top: 20px; display: flex; flex-direction: column; gap: 10px;">
+            
+            <input type="hidden" name="Bestellung_Details" id="cart-summary-input">
+            <input type="hidden" name="Gesamtbetrag" id="cart-total-input">
+
+            <div style="display: flex; gap: 10px;">
+              <input type="text" name="vorname" placeholder="Vorname" required style="width: 100%; padding: 10px; border: 1px solid #000; font-family: inherit;">
+              <input type="text" name="nachname" placeholder="Nachname" required style="width: 100%; padding: 10px; border: 1px solid #000; font-family: inherit;">
+            </div>
+            
+            <input type="tel" name="telefon" placeholder="Telefon (WhatsApp?)" style="padding: 10px; border: 1px solid #000; font-family: inherit;">
+            <input type="email" name="email" placeholder="E-Mail" style="padding: 10px; border: 1px solid #000; font-family: inherit;">
+            
+            <button type="submit" class="submit-btn" style="margin-top: 10px;">Anfrage senden</button>
+            <p style="text-align: center; font-size: 12px; margin-top: 5px; opacity: 0.7;">
+              --- nicht verbindlich ---
+            </p>
           </form>
         </div>
 
