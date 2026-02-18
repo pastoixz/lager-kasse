@@ -112,7 +112,7 @@ a:hover {
 }
 
 /* =========================
-   IMPRESSIONS REDESIGN
+   IMPRESSIONS REDESIGN (V2 - No Hover, Big Mobile)
    ========================= */
 
 .impressions-container {
@@ -121,6 +121,8 @@ a:hover {
   gap: 40px;
   width: 100%;
   max-width: 1000px;
+  /* Zentriert den Container auf der Seite */
+  margin: 0 auto;
 }
 
 /* Text Styling */
@@ -130,30 +132,28 @@ a:hover {
   margin: 0;
 }
 
-/* Das Grid für die Bilder (Mobile First: 2 Spalten) */
+/* Das Grid für die Bilder (Mobile First: Jetzt 1 Spalte für große Bilder) */
 .photo-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px; 
+  /* ÄNDERUNG: Nur 1 Spalte auf Mobile -> Bilder werden maximal groß */
+  grid-template-columns: 1fr;
+  gap: 16px;
 }
 
-/* Bilder Styling: Quadratisch geschnitten, damit das Grid clean bleibt */
+/* Bilder Styling: Quadratisch, aber ohne Hover-Effekte */
 .photo-grid img {
   width: 100%;
   aspect-ratio: 1 / 1;
   object-fit: cover;
   border: 1px solid #000;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  cursor: pointer;
+  display: block;
+  /* ÄNDERUNG: transition und cursor entfernt, da kein Hover mehr */
 }
 
-/* Brutalist Hover-Effekt: Bild springt hoch und wirft harten Schatten */
-.photo-grid img:hover {
-  transform: translate(-4px, -4px);
-  box-shadow: 6px 6px 0px #000;
-}
+/* ÄNDERUNG: Der gesamte .photo-grid img:hover Block wurde gelöscht */
 
-/* Desktop Ansicht: Text links, Bilder rechts */
+
+/* Desktop Ansicht: Text links, Bilder rechts im 2er Grid */
 @media (min-width: 768px) {
   .impressions-container {
     flex-direction: row;
@@ -161,13 +161,16 @@ a:hover {
   }
 
   .story-text {
-    flex: 1; 
+    flex: 1;
     position: sticky;
-    top: 40px; 
+    top: 40px;
   }
 
   .photo-grid {
-    flex: 1.2; 
+    flex: 1.2;
     gap: 20px;
+    /* ÄNDERUNG: Auf Desktop zwingen wir es zurück ins 2-Spalten-Raster */
+    grid-template-columns: repeat(2, 1fr);
   }
 }
+
