@@ -352,3 +352,84 @@ a:hover {
     top: 40px;
   }
 }
+/* =========================
+   SHOP & WARENKORB LAYOUT
+   ========================= */
+
+.shop-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.product-list {
+  flex: 2; /* Nimmt mehr Platz ein */
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.product-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 2px solid #000;
+  padding: 15px;
+  background: #fff;
+}
+
+.product-info h4 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.product-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Plus/Minus Buttons */
+.product-actions button {
+  width: 32px;
+  height: 32px;
+  background: #000;
+  color: #fff;
+  border: 1px solid #000;
+  font-family: inherit;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.product-actions button:hover:not(:disabled) {
+  background: #fff;
+  color: #000;
+}
+
+.product-actions button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* Die Sidebar für den Warenkorb */
+.cart-sidebar {
+  flex: 1;
+  border: 2px solid #000;
+  padding: 20px;
+  background: #fafafa;
+  height: fit-content;
+}
+
+/* Desktop-Anpassung: Warenkorb rechts festkleben */
+@media (min-width: 768px) {
+  .shop-container {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .cart-sidebar {
+    position: sticky;
+    top: 20px; /* Klebt beim Scrollen oben */
+  }
+}
