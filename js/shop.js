@@ -150,18 +150,24 @@ function renderCart() {
 }
 
 /**
- * 5. CHECKOUT LOGIK
+ * 5. CHECKOUT LOGIK (Silent Submission & Auto-Clear)
  */
 if (checkoutForm) {
   checkoutForm.addEventListener("submit", async (e) => {
-    e.preventDefault(); // Verhindert sofortiges Senden
+    e.preventDefault(); // Wir verhindern, dass die Seite wegspringt
     
     if (Object.keys(cart).length === 0) {
       alert("Dein Warenkorb ist noch leer!");
       return;
     }
 
-    // Items für deine Supabase RPC-Funktion vorbereiten
+    // Button deaktivieren, damit niemand doppelt klickt
+    const submitBtn = checkoutForm.querySelector('.submit-btn');
+    const originalBtnText = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Sende Anfrage...";
+
+    // Items für Supabase vorbereiten
     const itemsForDB = Object.entries(cart).map(([id, qty]) => {
       const p = products.find(x => String(x.id) === String(id));
       return { 
@@ -174,16 +180,44 @@ if (checkoutForm) {
 
     try {
       // 1. In Datenbank reservieren (Bestand abziehen)
-      const { error } = await supabase.rpc("checkout_order", { items: itemsForDB });
-      
-      if (error) throw error;
+      const { error: rpcError } = await supabase.rpc("checkout_order", { items: itemsForDB });
+      if (rpcError) throw rpcError;
 
-      // 2. Wenn DB-Update erfolgreich: Formular an Formspree senden
-      checkoutForm.submit(); 
-      
+      // 2. Formular "lautlos" an Formspree senden
+      const formData = new FormData(checkoutForm);
+      const response = await fetch(checkoutForm.action, {
+        method: 'POST',
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (response.ok) {
+        // ERFOLG!
+        // 3. Warenkorb leeren
+        cart = {};
+        
+        // 4. UI aktualisieren
+        renderProducts();
+        renderCart();
+        checkoutForm.reset();
+        
+        // 5. Erfolgsmeldung zeigen
+        alert("Merci! Die Anfrage isch bi mir acho. Ich melde mich bald bi dir! :)");
+        
+        // Optional: Den User zurück zur Buy-Seite schicken
+        // window.location.href = "/buy.html";
+        
+      } else {
+        throw new Error("Formspree Fehler");
+      }
+
     } catch (err) {
       console.error("Checkout Fehler:", err);
       alert("Da ist was schiefgelaufen: " + err.message);
+    } finally {
+      // Button wieder normal machen
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalBtnText;
     }
   });
 }
