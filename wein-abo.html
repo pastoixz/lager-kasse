@@ -46,5 +46,40 @@
 <a href="/legal.html" class="legal-link">Legal</a>
 </body>
 </html>
+<script type="module">
+  const aboForm = document.querySelector('.abo-form');
+  
+  if (aboForm) {
+    aboForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const submitBtn = aboForm.querySelector('.submit-btn');
+      const originalText = submitBtn.textContent;
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Sende Anfrage...";
+
+      try {
+        const formData = new FormData(aboForm);
+        const response = await fetch(aboForm.action, {
+          method: 'POST',
+          body: formData,
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (response.ok) {
+          aboForm.reset();
+          alert("Merci! Ich meld mi bi der i de nögste Täg! :)");
+        } else {
+          throw new Error("Fehler beim Senden");
+        }
+      } catch (err) {
+        alert("Oops, das hat nicht geklappt. Bitte versuchs nochmal oder schreib mir direkt eine Mail.");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+      }
+    });
+  }
+</script>
 </body>
 </html>
