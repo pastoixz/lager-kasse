@@ -224,3 +224,16 @@ if (checkoutForm) {
 
 // Skript starten
 loadProducts();
+
+// ✅ LIVE-UPDATE: Aktualisiert die Anzeige, wenn sich in der DB etwas ändert
+supabase
+  .channel('shop-live-updates')
+  .on(
+    'postgres_changes', 
+    { event: '*', schema: 'public', table: 'drinks' }, 
+    () => {
+      console.log("Datenbank-Update erkannt, lade Produkte neu...");
+      loadProducts(); // Lädt die Produkte neu und rendert die Liste + Buttons
+    }
+  )
+  .subscribe();
