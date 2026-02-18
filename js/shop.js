@@ -16,11 +16,13 @@ function formatCHF(value) {
 
 // DIE FUNKTION GLOBAL MACHEN
 window.updateCart = function(id, change) {
-  console.log("updateCart aufgerufen für ID:", id, "Change:", change);
+  console.log("updateCart aufgerufen für ID:", id, "Typ:", typeof id);
   
-  const prod = products.find(p => p.id === id);
+  // Wir wandeln beides in Strings um, um sicherzugehen (Verhindert Number vs String Fehler)
+  const prod = products.find(p => String(p.id) === String(id));
+  
   if (!prod) {
-    console.error("Produkt nicht gefunden!");
+    console.error("Produkt nicht gefunden! Vorhandene IDs:", products.map(p => p.id));
     return;
   }
   
