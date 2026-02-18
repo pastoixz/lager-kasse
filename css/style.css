@@ -353,111 +353,18 @@ a:hover {
   }
 }
 /* =========================
-   SHOP & WARENKORB LAYOUT
+   SHOP REDESIGN (Formular unten mittig)
    ========================= */
 
-.shop-container {
+.shop-top-row {
   display: flex;
   flex-direction: column;
   gap: 30px;
+  margin-bottom: 50px;
 }
 
 .product-list {
-  flex: 2; /* Nimmt mehr Platz ein */
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.product-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border: 2px solid #000;
-  padding: 15px;
-  background: #fff;
-}
-
-.product-info h4 {
-  margin: 0;
-  font-size: 16px;
-}
-
-.product-actions {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-/* Plus/Minus Buttons */
-.product-actions button {
-  width: 32px;
-  height: 32px;
-  background: #000;
-  color: #fff;
-  border: 1px solid #000;
-  font-family: inherit;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.product-actions button:hover:not(:disabled) {
-  background: #fff;
-  color: #000;
-}
-
-.product-actions button:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
-
-/* Die Sidebar für den Warenkorb */
-.cart-sidebar {
-  flex: 1;
-  border: 2px solid #000;
-  padding: 20px;
-  background: #fafafa;
-  height: fit-content;
-}
-
-/* Desktop-Anpassung: Warenkorb rechts festkleben */
-@media (min-width: 768px) {
-  .shop-container {
-    flex-direction: row;
-    align-items: flex-start;
-  }
-
-  .cart-sidebar {
-    position: sticky;
-    top: 20px; /* Klebt beim Scrollen oben */
-  }
-}
-/* =========================
-   SHOP GRID SYSTEM
-   ========================= */
-
-.shop-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
-}
-
-.shop-main {
   flex: 2;
-  display: flex;
-  flex-direction: column;
-  gap: 50px;
-}
-
-.product-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border: 1px solid #000;
-  padding: 18px;
-  margin-bottom: 12px;
-  background: #fff;
 }
 
 .cart-sidebar {
@@ -468,28 +375,35 @@ a:hover {
   height: fit-content;
 }
 
-.cart-items-list {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 20px 0;
-  font-size: 14px;
-}
-
-.cart-total-display {
+/* Formular Zentrierung */
+.shop-bottom-form {
+  display: flex;
+  justify-content: center;
+  width: 100%;
   border-top: 2px solid #000;
-  padding-top: 15px;
-  font-weight: bold;
-  font-size: 18px;
+  padding-top: 50px;
 }
 
-/* Desktop: Warenkorb rechts kleben lassen */
+.order-contact-section {
+  width: 100%;
+  max-width: 500px; /* Gleiche Breite wie dein Abo-Formular */
+}
+
+/* Desktop: Produkte & Warenkorb nebeneinander */
 @media (min-width: 768px) {
-  .shop-grid {
+  .shop-top-row {
     flex-direction: row;
     align-items: flex-start;
   }
-  .cart-sidebar {
-    position: sticky;
-    top: 40px;
-  }
 }
+
+/* Restliches Styling für Items (hast du schon, zur Sicherheit) */
+.product-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #000;
+  padding: 18px;
+  margin-bottom: 12px;
+}
+
