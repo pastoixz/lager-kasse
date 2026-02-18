@@ -407,3 +407,39 @@ a:hover {
   margin-bottom: 12px;
 }
 
+/* =========================
+   MOBILE FORM FIXES
+   ========================= */
+
+/* Verhindert, dass Felder über den Rand ragen */
+input, select, textarea {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+/* Speziell für kleine Bildschirme */
+@media (max-width: 480px) {
+  .abo-form input {
+    font-size: 13px; /* Etwas kleinere Schrift für lange Platzhalter */
+    padding: 10px 8px; /* Weniger Platzverschwendung links/rechts */
+  }
+
+  /* Der Text über dem Formular im Shop/Abo */
+  .order-contact-section p, 
+  .content p {
+    font-size: 14px;
+    line-height: 1.4;
+  }
+  
+  /* Falls die Spalten bei Vorname/Nachname noch nebeneinander kleben */
+  .form-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+/* Fix für sehr lange Platzhalter (Chrome/Safari) */
+::placeholder {
+  opacity: 0.6;
+  font-size: 0.9em;
+}
