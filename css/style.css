@@ -259,3 +259,21 @@ a:hover {
     flex-direction: column;
   }
 }
+/* =========================
+   LEGAL LINK (Unten Rechts)
+   ========================= */
+
+.legal-link {
+  position: fixed;   /* Heftet den Link am Bildschirmrand fest */
+  bottom: 16px;      /* Abstand von unten */
+  right: 20px;       /* Abstand von rechts */
+  font-size: 12px;   /* Schön klein */
+  color: #000;       /* Gleiche Farbe wie der Rest */
+  text-decoration: underline; /* Wie gewünscht unterstrichen */
+  opacity: 0.6;      /* Macht ihn etwas blasser/dezenter */
+  transition: opacity 0.2s ease;
+}
+
+.legal-link:hover {
+  opacity: 1;        /* Wird beim Drüberfahren voll sichtbar */
+}
