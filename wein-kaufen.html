@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shop - Wein kaufen</title>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="/">Stock</a>
+    <a href="/impressions.html">Impressions</a>
+    <a href="/buy.html">Buy!</a> 
+  </nav>
+
+  <main class="page">
+    <div class="content" style="max-width: 900px; width: 100%; text-align: left;">
+      
+      <h2 style="border-bottom: 2px solid #000; padding-bottom: 10px; text-align: center;">Shop</h2>
+      
+      <div class="shop-container">
+        
+        <div id="product-list" class="product-list">
+          <p>Lade Weine...</p>
+        </div>
+
+        <div class="cart-sidebar">
+          <h3 style="margin-top: 0;">Warenkorb</h3>
+          <ul id="cart-items" style="list-style: none; padding: 0; margin: 0 0 20px 0;">
+            <li class="small">Noch leer.</li>
+          </ul>
+          <div style="border-top: 2px solid #000; padding-top: 10px; font-weight: bold; font-size: 18px;">
+            Total: CHF <span id="cart-total">0.00</span>
+          </div>
+
+          <form id="checkout-form" style="margin-top: 20px; display: flex; flex-direction: column; gap: 10px;">
+            <input type="text" id="kunden-name" placeholder="Dein Name" required style="padding: 10px; border: 1px solid #000; font-family: inherit;">
+            <input type="email" id="kunden-email" placeholder="Deine E-Mail" required style="padding: 10px; border: 1px solid #000; font-family: inherit;">
+            <button type="submit" class="submit-btn" style="margin-top: 10px;">Kostenpflichtig bestellen</button>
+          </form>
+        </div>
+
+      </div>
+
+      <div style="text-align: center; margin-top: 40px;">
+        <a href="/buy.html">← Back to Buy</a>
+      </div>
+
+    </div>
+  </main>
+
+  <a href="/legal.html" class="legal-link">Legal</a>
+
+  <script type="module" src="./shop.js"></script>
+</body>
+</html>
