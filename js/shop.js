@@ -202,7 +202,7 @@ if (checkoutForm) {
         checkoutForm.reset();
         
         // 5. Erfolgsmeldung zeigen
-        alert("Merci! Die Anfrage isch bi mir acho. Ich melde mich bald bi dir! :)");
+        alert("Merci! I meld mi bald bi dir! :)");
         
         // Optional: Den User zurück zur Buy-Seite schicken
         // window.location.href = "/buy.html";
