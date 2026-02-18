@@ -18,34 +18,12 @@
     <div class="content" style="max-width: 1000px; width: 100%;">
       
       <p style="text-align: center; margin-bottom: 40px;">
-        Hey, wähl der die Weine aus wo d gern hettsch, i chum den gerne uf di zue, s isch unverbindlich ^^
+        Hey, wähl der die Weine aus wo d gern hettsch, i chum den gerne uf di zue, s isch unverbindlich :)
       </p>
       
-      <div class="shop-grid">
-        <div class="shop-main">
-          <div id="product-list" class="product-list">
-            <p>Lade Weine...</p>
-          </div>
-
-          <div class="order-contact-section">
-            <p style="margin-bottom: 20px; font-weight: 600;">Ahmelde oder Fragen dazu? gib dini Date do ih & denn guckemer weiter :))</p>
-            
-            <form id="checkout-form" action="https://formspree.io/f/xqedldev" method="POST" class="abo-form" style="margin: 0; max-width: 100%;">
-              <input type="hidden" name="Bestellung_Details" id="cart-summary-input">
-              <input type="hidden" name="Gesamtbetrag" id="cart-total-input">
-
-              <div class="form-row">
-                <input type="text" name="vorname" placeholder="Vorname" required>
-                <input type="text" name="nachname" placeholder="Nachname" required>
-              </div>
-              
-              <input type="tel" name="telefon" placeholder="Telefonnummer (falls Kontakt über WhatsApp lieber)">
-              <input type="email" name="email" placeholder="E-Mail (falls Kontakt über Mail lieber)">
-              
-              <button type="submit" class="submit-btn">Anfrage senden</button>
-              <p style="text-align: center; margin-top: 10px;">--- nicht verbindlich ---</p>
-            </form>
-          </div>
+      <div class="shop-top-row">
+        <div id="product-list" class="product-list">
+          <p>Lade Weine...</p>
         </div>
 
         <aside class="cart-sidebar">
@@ -57,6 +35,30 @@
             Total: CHF <span id="cart-total">0.00</span>
           </div>
         </aside>
+      </div>
+
+      <div class="shop-bottom-form">
+        <div class="order-contact-section">
+          <p style="margin-bottom: 20px; font-weight: 600; text-align: center;">
+            Hier deine daten ^^
+          </p>
+          
+          <form id="checkout-form" action="https://formspree.io/f/xqedldev" method="POST" class="abo-form">
+            <input type="hidden" name="Bestellung_Details" id="cart-summary-input">
+            <input type="hidden" name="Gesamtbetrag" id="cart-total-input">
+
+            <div class="form-row">
+              <input type="text" name="vorname" placeholder="Vorname" required>
+              <input type="text" name="nachname" placeholder="Nachname" required>
+            </div>
+            
+            <input type="tel" name="telefon" placeholder="Telefonnummer (falls Kontakt über WhatsApp lieber)">
+            <input type="email" name="email" placeholder="E-Mail (falls Kontakt über Mail lieber)">
+            
+            <button type="submit" class="submit-btn">Anfrage senden</button>
+            <p style="text-align: center; margin-top: 10px;">--- nicht verbindlich ---</p>
+          </form>
+        </div>
       </div>
 
       <div style="text-align: center; margin-top: 60px;">
